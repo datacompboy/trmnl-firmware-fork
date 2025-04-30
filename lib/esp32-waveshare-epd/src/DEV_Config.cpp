@@ -51,6 +51,12 @@ void GPIO_Config(void)
 
     pinMode(EPD_CS_PIN, OUTPUT);
 
+#ifdef EPD_PWR_PIN
+    // For Waveshare HAT rev 2.3 we may need to enable/disable PWR pin
+    pinMode(EPD_PWR_PIN, OUTPUT);
+    digitalWrite(EPD_PWR_PIN, HIGH);
+#endif
+
     digitalWrite(EPD_CS_PIN, HIGH);
 }
 /******************************************************************************
@@ -73,6 +79,18 @@ UBYTE DEV_Module_Init(void)
     // SPI.begin();
 
     return 0;
+}
+
+/******************************************************************************
+function: Shutdown power supply to the screen
+parameter:
+Info:
+******************************************************************************/
+void DEV_Module_Exit(void)
+{
+#ifdef EPD_PWR_PIN
+    digitalWrite(EPD_PWR_PIN, LOW);
+#endif
 }
 
 /******************************************************************************
