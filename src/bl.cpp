@@ -1802,7 +1802,7 @@ static bool setClock()
 static float readBatteryVoltage(void)
 {
 #ifdef FAKE_BATTERY_VOLTAGE
-  Log.warning("%s [%d]: FAKE_BATTERY_VOLTAGE is defined. Returning 4.2V.\r\n", __FILE__, __LINE__);
+  Log.info("%s [%d]: FAKE_BATTERY_VOLTAGE is defined. Returning 4.2V.\r\n", __FILE__, __LINE__);
   return 4.2f;
 #else
   Log.info("%s [%d]: Battery voltage reading...\r\n", __FILE__, __LINE__);

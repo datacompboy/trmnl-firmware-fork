@@ -82,6 +82,7 @@
 
 /*------------------------------------------------------------------------------------------------------*/
 UBYTE DEV_Module_Init(void);
+void DEV_Module_Exit(void);
 void DEV_SPI_WriteByte(UBYTE data);
 
 #endif
