@@ -46,5 +46,6 @@
 #include "utility/EPD_7in5_HD.h"
 #include "utility/EPD_7in5b_HD.h"
 #include "utility/EPD_13in3k.h"
+#include "utility/EPD_7in3g.h"
 
 #endif

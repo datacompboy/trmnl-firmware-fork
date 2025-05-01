@@ -10,6 +10,25 @@
 #include <ctype.h> //iscntrl()
 
 /**
+ * By defining SCREEN to be prefix of EPD driver, we can support alternative panels,
+ * as long as their Display function is still support 1 bit per pixel, and image size
+ * is 800*480.
+ */
+#ifndef SCREEN
+#define SCREEN EPD_7IN5_V2
+#endif
+#define SCREEN_NAME __XSTRING(SCREEN)
+
+#define SCREEN_HEIGHT       __CONCAT(SCREEN, _HEIGHT)
+#define SCREEN_WIDTH        __CONCAT(SCREEN, _WIDTH)
+#define SCREEN_Init_New     __CONCAT(SCREEN, _Init_New)
+#define SCREEN_Clear        __CONCAT(SCREEN, _Clear)
+#define SCREEN_ClearWhite   __CONCAT(SCREEN, _ClearWhite)
+#define SCREEN_Display      __CONCAT(SCREEN, _Display)
+#define SCREEN_Sleep        __CONCAT(SCREEN, _Sleep)
+
+
+/**
  * @brief Function to init the display
  * @param none
  * @return none
@@ -20,9 +39,9 @@ void display_init(void)
     DEV_Module_Init();
     Log.info("%s [%d]: dev module end\r\n", __FILE__, __LINE__);
 
-    Log.info("%s [%d]: screen hw start\r\n", __FILE__, __LINE__);
-    EPD_7IN5_V2_Init_New();
-    Log.info("%s [%d]: screen hw end\r\n", __FILE__, __LINE__);
+    Log.info("%s [%d]: screen " SCREEN_NAME " hw start\r\n", __FILE__, __LINE__);
+    SCREEN_Init_New();
+    Log.info("%s [%d]: screen " SCREEN_NAME "hw end\r\n", __FILE__, __LINE__);
 }
 
 /**
@@ -33,7 +52,7 @@ void display_init(void)
 void display_reset(void)
 {
     Log.info("%s [%d]: e-Paper Clear start\r\n", __FILE__, __LINE__);
-    EPD_7IN5_V2_Clear();
+    SCREEN_Clear();
     Log.info("%s [%d]:  e-Paper Clear end\r\n", __FILE__, __LINE__);
     // DEV_Delay_ms(500);
 }
@@ -44,7 +63,7 @@ void display_reset(void)
  */
 uint16_t display_height()
 {
-    return EPD_7IN5_V2_HEIGHT;
+    return SCREEN_HEIGHT;
 }
 
 /**
@@ -53,7 +72,7 @@ uint16_t display_height()
  */
 uint16_t display_width()
 {
-    return EPD_7IN5_V2_WIDTH;
+    return SCREEN_WIDTH;
 }
 
 /**
@@ -257,7 +276,7 @@ void display_show_image(uint8_t *image_buffer, bool reverse, bool isPNG)
     {
         Paint_DrawBitMap(image_buffer + 62);
     }
-    EPD_7IN5_V2_Display(BlackImage);
+    SCREEN_Display(BlackImage);
     Log.info("%s [%d]: display\r\n", __FILE__, __LINE__);
 
     free(BlackImage);
@@ -390,7 +409,7 @@ void display_show_msg(uint8_t *image_buffer, MSG message_type)
         break;
     }
 
-    EPD_7IN5_V2_Display(BlackImage);
+    SCREEN_Display(BlackImage);
     Log.info("%s [%d]: display\r\n", __FILE__, __LINE__);
     free(BlackImage);
     BlackImage = NULL;
@@ -411,7 +430,7 @@ void display_show_msg(uint8_t *image_buffer, MSG message_type, String friendly_i
     if (message_type == WIFI_CONNECT)
     {
         Log.info("%s [%d]: Display set to white\r\n", __FILE__, __LINE__);
-        EPD_7IN5_V2_ClearWhite();
+        SCREEN_ClearWhite();
         delay(1000);
     }
 
@@ -479,7 +498,7 @@ void display_show_msg(uint8_t *image_buffer, MSG message_type, String friendly_i
         break;
     }
     Log.info("%s [%d]: Start drawing...\r\n", __FILE__, __LINE__);
-    EPD_7IN5_V2_Display(BlackImage);
+    SCREEN_Display(BlackImage);
     Log.info("%s [%d]: display\r\n", __FILE__, __LINE__);
     free(BlackImage);
     BlackImage = NULL;
@@ -493,6 +512,6 @@ void display_show_msg(uint8_t *image_buffer, MSG message_type, String friendly_i
 void display_sleep(void)
 {
     Log.info("%s [%d]: Goto Sleep...\r\n", __FILE__, __LINE__);
-    EPD_7IN5_V2_Sleep();
+    SCREEN_Sleep();
     DEV_Module_Exit();
 }
