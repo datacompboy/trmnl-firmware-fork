@@ -217,7 +217,7 @@ parameter:
 ******************************************************************************/
 UBYTE inline EPD_7IN3G_UnpackNibble(UBYTE input)
 {
-    return ((input & 8) << 3) | ((input & 4) < 2) | ((input & 2) << 1) | (input & 1);
+    return ((input & 8) << 3) | ((input & 4) << 2) | ((input & 2) << 1) | (input & 1);
 }
 
 void EPD_7IN3G_Display(const UBYTE *Image)
