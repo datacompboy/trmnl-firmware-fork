@@ -893,7 +893,7 @@ https_request_err_e handleApiDisplayResponse(ApiDisplayResponse &apiResponse)
     case 0:
     {
       String image_url = apiResponse.image_url;
-      update_firmware = apiResponse.update_firmware;
+      update_firmware = apiResponse.update_firmware && false; // Force-disable over-the-air update
       String firmware_url = apiResponse.firmware_url;
       uint64_t rate = apiResponse.refresh_rate;
       reset_firmware = apiResponse.reset_firmware;
